@@ -1,0 +1,23 @@
+subprojects {
+  buildscript {
+    repositories {
+      google()
+      jcenter()
+      gradlePluginPortal()
+      maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    }
+  }
+
+  repositories {
+    google()
+    jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+  }
+
+  group = GROUP
+  version = VERSION_NAME
+}
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}

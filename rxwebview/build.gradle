@@ -1,0 +1,53 @@
+buildscript {
+  dependencies {
+    classpath Libs.android_plugin
+    classpath Libs.kotlin_plugin
+    classpath Libs.dokka_plugin
+    classpath Libs.ktlint_plugin
+//    classpath Libs.publish_plugin
+  }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'jacoco'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
+apply plugin: 'org.jetbrains.dokka-android'
+//apply plugin: "com.vanniktech.maven.publish"
+
+android {
+  compileSdkVersion Vers.compile_sdk
+
+  defaultConfig {
+    minSdkVersion Vers.min_sdk
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    debug {
+      testCoverageEnabled true
+    }
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  libraryVariants.all {
+    it.generateBuildConfig.enabled = false
+  }
+}
+
+dependencies {
+  api Libs.kotlin
+  api Libs.rx_java
+  implementation Libs.rx_android
+  implementation Libs.android_annotation
+
+  androidTestImplementation Libs.test_rule
+  androidTestImplementation Libs.test_runner
+  androidTestImplementation Libs.test_junit_runner
+  androidTestImplementation(Libs.espresso, {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push-kotlin.gradle')
